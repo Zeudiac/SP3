@@ -1,0 +1,68 @@
+@startuml
+
+class UserMenu
+abstract class Media
+class NotWatched
+class Watched
+class Movies
+class Series
+class Genre
+class User
+class RunService
+class Main
+
+Main <|-- RunService
+UserMenu <|-- User
+
+RunService <|-- UserMenu
+
+User <|-- Media
+
+Media o-- NotWatched
+Media o-- Watched
+
+NotWatched o-- Movies
+NotWatched o-- Series
+NotWatched o-- Genre
+
+
+Watched *-- NotWatched
+
+abstract class Media {
+  - String title
+  - int year
+  - ArrayList<String> categories
+  - double rating
+  + void playMedia()
+  + void displayDetails()
+  + void playMedia()
+  + void saveMedia()
+  + void deleteSavedMedia()
+}
+
+class User {
+  -String userName
+  -String password
+  - ArrayList<Media> watchedList
+  - ArrayList<Media> savedList
+  + void createAccount(String username, String password)
+  + boolean login(String userName, String Password)
+  + void logout()
+  + Media searchMedia(String title)
+  + void saveMedia(Media media)
+}
+
+class Watched{
+  - Media media
+  + setMedia(Media media)
+  + getMedia(Media media)
+}
+
+class NotWatched{
+  - Media media
+  + setMedia(Media media)
+  + getMedia(Media media)
+}
+
+}
+@enduml
