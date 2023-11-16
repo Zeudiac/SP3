@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class StartMenu
+class UserMenu
+class Create
+class Login
+interface Media
+class NotWatched
+class Watched
+class Movies
+class Series
+class Genre
+class User
+class SavedMedia
+
+
+User <|-- UserMenu
+StartMenu <|-- UserMenu
+UserMenu <|--Create
+UserMenu <|-- Login
+
+Login <|-- Media
+Create <|-- Media
+Media <|-- NotWatched
+Media <|-- Watched
+
+NotWatched <|-- Movies
+NotWatched <|-- Series
+NotWatched <|-- Genre
+Media <|-- SavedMedia
+
+Watched <|-- NotWatched
+
+class SavedMedia{
+SaveMovie();
+DeleteSavedMovie();
+}
+
+class UserMenu {
+Object[] elementData
+size()
+}
+
+
+@enduml
