@@ -8,48 +8,78 @@ class Movies
 class Series
 class Genre
 class User
-class RunService
 class Main
+class FileIO
+class TextUI
+Interface IO
 
-Main <|-- RunService
-UserMenu <|-- User
+Main o-- UserMenu
+UserMenu o-- User
 
-RunService <|-- UserMenu
+UserMenu o-- TextUI
+UserMenu o-- IO
+IO <|-- FileIO
 
-User <|-- Media
+User o-- Media
 
 Media o-- NotWatched
 Media o-- Watched
 
-NotWatched o-- Movies
-NotWatched o-- Series
-NotWatched o-- Genre
-
+Media <|-- Movies
+Media <|-- Series
+Media <|-- Genre
 
 Watched *-- NotWatched
+
+Interface IO{
+- Scanner scanner
+}
+
+class Main{
+  + static void main(string [] args)
+}
+
+class TextUI{
+  + String getInput(String msg)
+  - Scanner scanner
+  + void displayMessage(String msg)
+}
+
+class FileIO{
+  + ArrayList<Player> readPlayerData(String path)
+  + void savePlayerData(ArrayList<Player> players)
+  + String[] readBoardData(String path, int length)
+}
+
+class UserMenu{
+  - ArrayList<User> users
+  - TextUI ui
+  - FileIO io
+
+  + void runUserSetupDialog()
+  + void displayUsers()
+  + boolean logIn(String userName, String Password)
+  + void logOut()
+  + void createAccount(String userName, String password)
+  + Media searchMedia(String title)
+  + void playMedia()
+  + void saveMedia(Media media)
+  + void deleteSavedMedia()
+}
+
+class User {
+  - String userName
+  - String password
+  - ArrayList<Media> watchedList
+  - ArrayList<Media> savedList
+}
 
 abstract class Media {
   - String title
   - int year
   - ArrayList<String> categories
   - double rating
-  + void playMedia()
   + void displayDetails()
-  + void playMedia()
-  + void saveMedia()
-  + void deleteSavedMedia()
-}
-
-class User {
-  -String userName
-  -String password
-  - ArrayList<Media> watchedList
-  - ArrayList<Media> savedList
-  + void createAccount(String username, String password)
-  + boolean login(String userName, String Password)
-  + void logout()
-  + Media searchMedia(String title)
-  + void saveMedia(Media media)
 }
 
 class Watched{
@@ -64,5 +94,4 @@ class NotWatched{
   + getMedia(Media media)
 }
 
-}
 @enduml
