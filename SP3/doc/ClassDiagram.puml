@@ -2,8 +2,7 @@
 
 class UserMenu
 abstract class Media
-class NotWatched
-class Watched
+
 class Movies
 class Series
 class Genre
@@ -11,25 +10,27 @@ class User
 class Main
 class FileIO
 class TextUI
+class Streaming
 Interface IO
 
-Main o-- UserMenu
+Main o-- Streaming
+Streaming o-- UserMenu
 UserMenu o-- User
 
 UserMenu o-- TextUI
-UserMenu o-- IO
+Streaming o-- IO
 IO <|-- FileIO
+UserMenu <|-- FileIO
 
 User o-- Media
-
-Media o-- NotWatched
-Media o-- Watched
 
 Media <|-- Movies
 Media <|-- Series
 Media <|-- Genre
 
-Watched *-- NotWatched
+class Streaming{
+  - ArrayList<Media> medias
+}
 
 Interface IO{
 - Scanner scanner
@@ -55,7 +56,6 @@ class UserMenu{
   - ArrayList<User> users
   - TextUI ui
   - FileIO io
-
   + void runUserSetupDialog()
   + void displayUsers()
   + boolean logIn(String userName, String Password)
@@ -82,16 +82,5 @@ abstract class Media {
   + void displayDetails()
 }
 
-class Watched{
-  - Media media
-  + setMedia(Media media)
-  + getMedia(Media media)
-}
-
-class NotWatched{
-  - Media media
-  + setMedia(Media media)
-  + getMedia(Media media)
-}
 
 @enduml
