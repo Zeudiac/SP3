@@ -1,11 +1,10 @@
 @startuml
+!pragma layout smetana
 
 class UserMenu
 abstract class Media
-
 class Movies
 class Series
-class Genre
 class User
 class Main
 class FileIO
@@ -20,13 +19,12 @@ UserMenu o-- User
 UserMenu o-- TextUI
 Streaming o-- IO
 IO <|-- FileIO
-UserMenu <|-- FileIO
+UserMenu o-- FileIO
 
 User o-- Media
 
 Media <|-- Movies
 Media <|-- Series
-Media <|-- Genre
 
 class Streaming{
   - ArrayList<Media> medias
@@ -80,6 +78,7 @@ abstract class Media {
   - ArrayList<String> categories
   - double rating
   + void displayDetails()
+  + void toString()
 }
 
 
