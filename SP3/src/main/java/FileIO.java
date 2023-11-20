@@ -40,34 +40,37 @@ public class FileIO {
             System.out.println("noget gik galt ved skrivning til fil");
         }
     }
-
-        public Movie readMovieData(ArrayList<Movie> movies, String path) {
-
+        ArrayList<Movie> movies = new ArrayList<>();
+        public ArrayList readMovieData(String path) {
+            File file = new File(path);
             try {
-                    File file = new File(path);
                     Scanner scanner = new Scanner(file);
+                    while(scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
 
-                    String line = scanner.nextLine();
+                        String[] lineChop;
+                        lineChop = line.split(";");
 
-                    String[] lineChop;
-                    lineChop = line.split(";");
+                        String title = lineChop[0];
+                        String year1 = lineChop[1].trim();
+                        String categories = lineChop[2];
+                        String rating1 = lineChop[3].trim();
+                        rating1 = rating1.replace(",", ".");
 
-                    String title = lineChop[0];
-                    String year1 =  lineChop[1];
-                    String categories = lineChop[2];
-                    String rating1 = lineChop[3];
+                        int year = Integer.parseInt(year1);
+                        double rating = Double.parseDouble(rating1);
 
-                    int year = Integer.parseInt(year1);
-                    double rating = Double.parseDouble(rating1);
-
-                Movie movie = new Movie(title, year, categories, rating);
-                    return movie;
+                        Movie movie = new Movie(title, year, categories, rating);
+                        movies.add(movie);
+                    }
+                    return movies;
 
             } catch (FileNotFoundException e) {
                 System.err.println("Error: File not found");
             } catch (NumberFormatException e) {
                 System.err.println("Error: Invalid format in the file");
             }
+
             return null;
         }
 

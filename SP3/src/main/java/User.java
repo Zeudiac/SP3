@@ -3,8 +3,12 @@ import java.util.ArrayList;
 public class User {
     private String userName;
     private String passWord;
-    private ArrayList<Media> watchedList;
-    private ArrayList<Media> savedList;
+    private ArrayList<Movie> watchedListMovies;
+    private ArrayList<Movie> savedListMovies;
+
+    private ArrayList<Serie> watchedListSeries;
+    private ArrayList<Serie> savedListSeries;
+
 
 
     public String getUserName() {
@@ -15,11 +19,11 @@ public class User {
         return passWord;
     }
 
-    public ArrayList<Media> getWatchedList() {
+    public ArrayList<Movie> getWatchedList() {
         return watchedList;
     }
 
-    public ArrayList<Media> getSavedList() {
+    public ArrayList<Movie> getSavedList() {
         return savedList;
     }
 }

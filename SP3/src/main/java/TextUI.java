@@ -17,7 +17,6 @@ import java.util.Scanner;
         }
 
 
-
         public int getNumericInput(String msg){
             System.out.println(msg);//Stille brugeren et spørgsmål
 

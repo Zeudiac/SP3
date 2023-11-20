@@ -2,7 +2,6 @@
 !pragma layout smetana
 
 class UserMenu
-abstract class Media
 class Movies
 class Series
 class User
@@ -21,10 +20,10 @@ Streaming o-- IO
 IO <|-- FileIO
 UserMenu o-- FileIO
 
-User o-- Media
 
-Media <|-- Movies
-Media <|-- Series
+
+Streaming <|-- Movies
+Streaming <|-- Series
 
 class Streaming{
   - ArrayList<Media> medias
@@ -72,7 +71,7 @@ class User {
   - ArrayList<Media> savedList
 }
 
-abstract class Media {
+class Movies {
   - String title
   - int year
   - ArrayList<String> categories
