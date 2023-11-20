@@ -8,15 +8,15 @@ public class Streaming {
     String path;
 
     public void streamingSetup(){
-        Scanner scan = new Scanner("MediaFiles/100bedstefilm.txt");
+
         ArrayList<Movie> movies = new ArrayList<>();
         //ArrayList<Serie> series = new ArrayList<>();
 
         FileIO io = new FileIO();
 
-        while(scan.hasNextLine()){
-            movies.add(io.readMovieData(movies,"MediaFiles/100bedstefilm.txt"));
-        }
+
+            movies.add(io.readMovieData(movies, "MediaFiles/100bedstefilm.txt"));
+
         System.out.println(movies);
 
 

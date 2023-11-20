@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -41,17 +42,25 @@ public class FileIO {
     }
 
         public Movie readMovieData(ArrayList<Movie> movies, String path) {
-            try (Scanner scanner = new Scanner(new File(path))) {
+
+            try {
+                    File file = new File(path);
+                    Scanner scanner = new Scanner(file);
 
                     String line = scanner.nextLine();
-                    String[] movieData = line.split(";");
 
-                    String title = movieData[0];
-                    int year = Integer.parseInt(movieData[1]);
-                    String categories = movieData[2];
-                    double rating = Double.parseDouble(movieData[3]);
+                    String[] lineChop;
+                    lineChop = line.split(";");
 
-                    Movie movie = new Movie(title, year, categories, rating);
+                    String title = lineChop[0];
+                    String year1 =  lineChop[1];
+                    String categories = lineChop[2];
+                    String rating1 = lineChop[3];
+
+                    int year = Integer.parseInt(year1);
+                    double rating = Double.parseDouble(rating1);
+
+                Movie movie = new Movie(title, year, categories, rating);
                     return movie;
 
             } catch (FileNotFoundException e) {
