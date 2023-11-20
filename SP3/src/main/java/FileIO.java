@@ -8,6 +8,32 @@ import java.util.Scanner;
 
 
 public class FileIO {
+    public Map<String,String> readUserData(String path) {
+
+
+
+
+        return null;
+    }
+    // Metode til at gemme brugeroplysninger i en fil
+    protected static void  saveUserData(Map<String, String> userCredentials, String path) {
+
+        try (FileWriter writer = new FileWriter(path,true)) {
+
+            // Gennemgå alle brugernavne og adgangskoder i userCredentials i en foreach
+            for (Map.Entry<String, String> entry : userCredentials.entrySet()) {
+                // Opret en linje, der indeholder brugernavnet og adgangskoden, adskilt af et komma
+                String lineToWrite = entry.getKey() + "," + entry.getValue() + "\n";
+                // Skriv linjen til filen
+                writer.write(lineToWrite);
+            }
+            // Udskriv besked om, at brugerdata er gemt
+            System.out.println("User data saved.");
+        } catch (IOException e) {
+            // Håndter eventuelle fejl ved skrivning til fil
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
     public ArrayList<String> readUserData(String path) {
         ArrayList<String> data = new ArrayList<>();
         //instantier File

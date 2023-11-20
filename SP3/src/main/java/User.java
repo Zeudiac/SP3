@@ -20,11 +20,11 @@ public class User {
     }
 
     public ArrayList<Movie> getWatchedList() {
-        return watchedList;
+        return watchedListMovies;
     }
 
     public ArrayList<Movie> getSavedList() {
-        return savedList;
+        return savedListMovies;
     }
 }
 
