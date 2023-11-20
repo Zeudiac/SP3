@@ -8,32 +8,7 @@ import java.util.Scanner;
 
 
 public class FileIO {
-    public Map<String,String> readUserData(String path) {
 
-
-
-
-        return null;
-    }
-    // Metode til at gemme brugeroplysninger i en fil
-    protected static void  saveUserData(Map<String, String> userCredentials, String path) {
-
-        try (FileWriter writer = new FileWriter(path,true)) {
-
-            // Gennemgå alle brugernavne og adgangskoder i userCredentials i en foreach
-            for (Map.Entry<String, String> entry : userCredentials.entrySet()) {
-                // Opret en linje, der indeholder brugernavnet og adgangskoden, adskilt af et komma
-                String lineToWrite = entry.getKey() + "," + entry.getValue() + "\n";
-                // Skriv linjen til filen
-                writer.write(lineToWrite);
-            }
-            // Udskriv besked om, at brugerdata er gemt
-            System.out.println("User data saved.");
-        } catch (IOException e) {
-            // Håndter eventuelle fejl ved skrivning til fil
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
-    }
     public ArrayList<String> readUserData(String path) {
         ArrayList<String> data = new ArrayList<>();
         //instantier File
@@ -99,6 +74,50 @@ public class FileIO {
 
             return null;
         }
+
+    private ArrayList<Serie> series = new ArrayList<>();
+
+    public ArrayList<Serie> readSeriesData(String path) {
+        File file = new File(path);
+
+        try {
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+
+                String[] lineChop = line.split(";");
+                String title = lineChop[0];
+                String yearRange = lineChop[1].trim();
+                String[] years = yearRange.split("-");
+                int yearFrom = Integer.parseInt(years[0]);
+                String yearTo = (years.length > 1) ? years[1] : "still running";
+
+                String categories = lineChop[2];
+                String rating1 = lineChop[3].trim();
+                rating1 = rating1.replace(",", ".");
+                double rating = Double.parseDouble(rating1);
+
+                String[] seasons = lineChop[4].split(", ");
+                for (String season : seasons) {
+                    String[] seasonInfo = season.split("-");
+                    int seasonNumber = Integer.parseInt(seasonInfo[0]);
+                    int numberOfEpisodes = Integer.parseInt(seasonInfo[1]);
+
+                    Serie serie = new Serie(title, yearFrom, yearTo, categories, rating, seasonNumber, numberOfEpisodes);
+                    series.add(serie);
+                }
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: File not found");
+        } catch (NumberFormatException e) {
+            System.err.println("Error: Invalid format in the file");
+        }
+
+        return null;
+    }
 
 
 

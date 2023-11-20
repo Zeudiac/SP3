@@ -18,4 +18,32 @@ public class Serie {
         this.seasonNumber = seasonNumber;
         this.numberOfEpisodes = numberOfEpisodes;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getYearFrom() {
+        return yearFrom;
+    }
+
+    public String getYearTo() {
+        return yearTo;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public int getSeasonNumber() {
+        return seasonNumber;
+    }
+
+    public int getNumberOfEpisodes() {
+        return numberOfEpisodes;
+    }
 }
