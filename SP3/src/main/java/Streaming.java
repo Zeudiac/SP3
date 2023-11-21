@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Streaming {
 
     String path;
+    UserMenu userMenu = new UserMenu();
 
     public void streamingSetup(){
         ArrayList<Movie> movies = new ArrayList<>();
@@ -34,6 +35,10 @@ public class Streaming {
             login();
         }
 
+    }
+
+    public void createAccount(){
+        userMenu.createAccount();
     }
 
 }

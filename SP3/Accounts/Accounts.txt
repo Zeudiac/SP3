@@ -1,4 +1,8 @@
-Username,Password
-Malte,cZ
-Alfredo,080600
-Zeudiac,434
+Username;Password
+Malte;cZ
+Alfredo;080600
+Zeudiac;434
+malte;malte
+alv;543
+mals;fasf
+jhodsfjhosdh;ihjsdfgdsijh
