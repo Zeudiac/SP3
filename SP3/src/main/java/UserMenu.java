@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -5,21 +6,42 @@ import java.util.Map;
 import java.util.*;
 
 public class UserMenu {
-
+    File file = new File("Accounts/Accounts.txt");
     private ArrayList<User> users;
-    protected Map<String,String>userCredentials;
+    protected Map<String, String> userCredentials;
 
 
-
-    public void runUserSetupDialog(){
-
-    }
-    public void displayUsers(){
+    public void runUserSetupDialog() {
 
     }
-    
-    public boolean logIn(String userName,String passWord) {
-        return true;
+
+    public void displayUsers() {
+
+    }
+
+    public boolean userLogIn(String userName, String passWord) {
+        try {
+            Scanner scan = new Scanner(file);
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                System.out.println(line);
+                String[] lineChop;
+                lineChop = line.split(",");
+
+
+                String userN = lineChop[0].trim();
+                String userP = lineChop[1].trim();
+
+                if (userName.equals(userN)&&passWord.equals(userP)) {
+                    return true;
+                }
+
+            }
+            return false;
+        }   catch (Exception e) {
+            System.out.println("runtime exeption...");
+            throw new RuntimeException(e);
+         }
     }
     public void logOut(){
 

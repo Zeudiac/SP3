@@ -48,7 +48,6 @@ public class FileIO {
                     Scanner scanner = new Scanner(file);
                     while(scanner.hasNextLine()) {
                         String line = scanner.nextLine();
-
                         String[] lineChop;
                         lineChop = line.split(";");
 
