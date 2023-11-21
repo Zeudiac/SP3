@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         Streaming s1 = new Streaming();
         //s1.streamingSetup();
-        s1.login();
-        //s1.createAccount();
+        //s1.login();
+        s1.createAccount();
     }
 }

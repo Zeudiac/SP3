@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -75,16 +76,14 @@ public class FileIO {
         }
 
     private ArrayList<Serie> series = new ArrayList<>();
-
     public ArrayList<Serie> readSeriesData(String path) {
         File file = new File(path);
-
         try {
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-
+                //System.out.println(line);
                 String[] lineChop = line.split(";");
                 String title = lineChop[0];
                 String yearRange = lineChop[1].trim();
@@ -98,28 +97,27 @@ public class FileIO {
                 double rating = Double.parseDouble(rating1);
 
                 String[] seasons = lineChop[4].split(", ");
+                List<Serie.Season> serieSeasons = new ArrayList<>();
+
                 for (String season : seasons) {
                     String[] seasonInfo = season.split("-");
-                    int seasonNumber = Integer.parseInt(seasonInfo[0]);
-                    int numberOfEpisodes = Integer.parseInt(seasonInfo[1]);
-
-                    Serie serie = new Serie(title, yearFrom, yearTo, categories, rating, seasonNumber, numberOfEpisodes);
-                    series.add(serie);
+                    String seasonNumber = seasonInfo[0];
+                    String numberOfEpisodes = seasonInfo[1];
+                    Serie.Season serieSeason = new Serie.Season(seasonNumber, numberOfEpisodes);
+                    serieSeasons.add(serieSeason);
                 }
+
+                Serie serie = new Serie(title, yearFrom, yearTo, categories, rating, serieSeasons);
+                series.add(serie);
             }
 
-            scanner.close();
-        } catch (FileNotFoundException e) {
+            return series;
+        } catch(FileNotFoundException e){
             System.err.println("Error: File not found");
-        } catch (NumberFormatException e) {
+        } catch(NumberFormatException e){
             System.err.println("Error: Invalid format in the file");
         }
 
         return null;
     }
-
-
-
-
-
 }

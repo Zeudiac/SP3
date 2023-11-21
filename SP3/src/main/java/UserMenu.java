@@ -11,6 +11,7 @@ public class UserMenu {
     protected Map<String, String> userCredentials;
     String userName;
     String passWord;
+    static TextUI ui = new TextUI();
 
 
     public void runUserSetupDialog() {
@@ -56,16 +57,31 @@ public class UserMenu {
 
 
         // Opretter en ny instans af TextUI-klassen.
-        TextUI ui = new TextUI();
-
         String input="";
-
-
-        // Bruger TextUI-klassen til at indhente brugernavnet fra brugeren.
         input=ui.getInput("Enter username: ");
 
         userName=input.trim();
+        try {
+            Scanner scan = new Scanner(file);
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                String[] lineChop;
+                lineChop = line.split(";");
 
+                String userN = lineChop[0].trim();
+
+                if (userName.equals(userN)) {
+                    System.out.println("Try again, the username already exist!");
+                    input=ui.getInput("Enter username: ");
+
+                    userName=input.trim();
+                }
+            }
+
+        }   catch (Exception e) {
+            System.out.println("runtime exeption...");
+            throw new RuntimeException(e);
+        }
 
         input= ui.getInput("Enter passoword: ");
         passWord=input.trim();
@@ -98,8 +114,6 @@ public class UserMenu {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
-
-
         public void playMedia () {
 
         }

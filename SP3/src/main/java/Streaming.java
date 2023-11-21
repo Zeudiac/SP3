@@ -14,9 +14,7 @@ public class Streaming {
         FileIO io = new FileIO();
 
         movies=io.readMovieData("MediaFiles/100bedstefilm.txt");
-        System.out.println(movies);
         series=io.readSeriesData("MediaFiles/100bedsteserier.txt");
-        System.out.println(series);
 
     }
     public void login(){
