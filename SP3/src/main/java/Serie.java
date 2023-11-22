@@ -56,6 +56,9 @@ public class Serie {
 
         return result;
     }
+    public void displayDetails(){
+        toString();
+    }
 
 
     public static class Season {

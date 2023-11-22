@@ -27,7 +27,7 @@ public class UserMenu {
             Scanner scan = new Scanner(file);
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                System.out.println(line);
+
                 String[] lineChop;
                 lineChop = line.split(";");
 
@@ -76,6 +76,7 @@ public class UserMenu {
 
                     userName=input.trim();
                 }
+
             }
 
         }   catch (Exception e) {
@@ -108,13 +109,17 @@ public class UserMenu {
                 writer.write("\n"+lineToWrite);
             }
             // Udskriv besked om, at brugerdata er gemt
-            System.out.println("User data saved.");
+            System.out.println("ACCOUNT CREATED.");
         } catch (IOException e) {
             // Håndter eventuelle fejl ved skrivning til fil
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
-        public void playMedia () {
+        public void playMovie (ArrayList<Movie> movies, int input) {
+
+        }
+
+        public void playSeries (ArrayList<Serie> series, int input) {
 
         }
 

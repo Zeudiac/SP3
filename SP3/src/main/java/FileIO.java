@@ -109,6 +109,7 @@ public class FileIO {
 
                 Serie serie = new Serie(title, yearFrom, yearTo, categories, rating, serieSeasons);
                 series.add(serie);
+
             }
 
             return series;

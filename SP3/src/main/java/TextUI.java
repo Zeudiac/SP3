@@ -31,7 +31,7 @@ import java.util.Scanner;
                 num = Integer.parseInt(input);       //Konvertere svaret til et tal
 
             }catch (NumberFormatException e){
-                System.out.println("This was not a number, "+e.getMessage());
+                System.out.println("This was not a number, try again.");
                 num = getNumericInput(msg);
 
             }
