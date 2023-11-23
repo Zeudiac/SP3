@@ -23,12 +23,7 @@ public class Streaming {
     UserMenu userMenu = new UserMenu();
     TextUI ui = new TextUI();
 
-
-
     User user;
-
-
-
 
     ArrayList<Movie> movies = new ArrayList<>();
     ArrayList<Serie> series = new ArrayList<>();
@@ -396,15 +391,24 @@ public class Streaming {
         //User chooses to login or create new profile.
         input = ui.getNumericInput("(1 or 2):");
         createNewAccountOrLogin();
-
-
     }
 
     public void startStream(){
-        chooseWhatToBrowse();
-        chooseMedia();
-        chooseWhatToDoWithChosenMedia();
-        endOfStreamLoop();
+
+        //chooseWhatToBrowse();
+        //chooseMedia();
+        //chooseWhatToDoWithChosenMedia();
+        //endOfStreamLoop();
+        String stringInput = ui.getInput("Write the category you want to search for:");
+        int count=0;
+        for(Movie m: movies){
+            if(m.getCategories().contains(stringInput)){
+                count++;
+                System.out.println(count+". "+m.getTitle()+" - "+m.getCategories());
+            }
+        }
+
     }
+
 
 }
