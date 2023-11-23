@@ -1,21 +1,31 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Streaming {
 
     String path;
     private int chosenMedia;
+    String usrName;
     private int whatToDoWithMovie;
     private int input;
     private String textInput;
+    String fileName;
     private boolean movieChosen = false;
     UserMenu userMenu = new UserMenu();
     TextUI ui = new TextUI();
 
+
+
+    User user;
 
 
 
@@ -45,7 +55,7 @@ public class Streaming {
     public void login(){
         Scanner usrInput = new Scanner(System.in);
         System.out.println("To login - Please type your username: ");
-        String usrName = usrInput.nextLine();
+        usrName = usrInput.nextLine();
         System.out.println("Now the password please: ");
         String usrPass = usrInput.nextLine();
 
@@ -57,7 +67,7 @@ public class Streaming {
             System.out.println("Seems your credentials were incorrect... :(");
             login();
         }
-
+        user = new User(usrName,usrPass);
     }
 
     public void createAccount(){
@@ -92,6 +102,9 @@ public class Streaming {
                 count++;
                 System.out.println(count+": "+s.getTitle());
             }
+        }
+        else if(input==3){
+
         }
         else{
             chooseWhatToBrowse();
@@ -134,7 +147,7 @@ public class Streaming {
             input = ui.getNumericInput("Seems you typed a number that is not within the given range - please try again (1-100): ");
             chooseMedia();
         }
-        }
+    }
 
 
 
@@ -142,40 +155,23 @@ public class Streaming {
         if(input<5&&input>0) {
             if (movieChosen) {
                 if(input==1){
-                //1. Play Movie
+                    //1. Play Movie
                     System.out.println(movies.get(chosenMedia)+" is now playing");
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
-                    //Add to watched movies list
 
-                    //Opretter text fil for brugeren med deres gemte film - Skal hedde brugerens navn
-                    //Skal ikke oprette fil såfremt fil med brugerens navn allerede eksistere
-
-                    //Tilføjer den valgte film til text filen
-                    //Reinatilere "savedMoviesarraylist" for brugeren og tilføjer den gemte fil
+                    addToWatchedMovies(user);
                 }
                 if(input==2) {
-                //2. Add to Saved Movies list
-                    //Funktionen tager imod et bruger objekt
-
-                    //Opretter text fil for brugeren med deres gemte film - Skal hedde brugerens navn
-                    //Skal ikke oprette fil såfremt fil med brugerens navn allerede eksistere
-
-                    //Tilføjer den valgte film til text filen
-                    //Reinatilere "savedMoviesarraylist" for brugeren og tilføjer den gemte fil
+                    //2. Add to saved movies
+                    addToSavedMovies(user);
                 }
                 if(input==3){
-                //3. Delete from Saved Movies list
-                    //Funktionen tager imod et bruger objekt
-
-                    //Smider en error til brugeren hvis user object ikke har nogle gemte film
-
-                    //Fjerner den valgte film fra brugerens gemte
-                    //Reinatilere "savedMoviesarraylist" for brugeren og tilføjer den gemte fil
+                    //3. Delete from Saved Movies list
                 }
                 if(input==4){
-                //4. Display details
+                    //4. Display details
                     System.out.println(movies.get(chosenMedia));
                 }
             }
@@ -187,6 +183,8 @@ public class Streaming {
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
+
+
                 }
                 if(input==2) {
                     //
@@ -205,9 +203,83 @@ public class Streaming {
             chooseWhatToDoWithChosenMedia();
         }
     }
-    public void addToSaved(User u){
-        u.getSavedList().add(movies.get(chosenMedia));
+
+    public void addToWatchedMovies(User user){
+
+        ArrayList<Movie> watchedMovies = user.getSavedList();
+
+        // Add the selected movie to the user's list of saved movies
+        watchedMovies.add(movies.get(chosenMedia));
+
+        // Create the filename based on the user's name
+        fileName = "UserWatchedMedias/UserWatchedMovies/" + user.getUserName() + ".txt";
+        File savedMoviesFile = new File(fileName);
+
+        try (FileWriter writer = new FileWriter(savedMoviesFile, true)) {
+            // Write the selected movie to the file
+            String movieTitle = movies.get(chosenMedia).getTitle();
+            writer.write(movieTitle + "\n");
+
+        } catch (IOException e) {
+            // Handle any errors that occur during file writing
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+
+        Movie watchedMovie= movies.get(chosenMedia);
+
+        List<String> details = new ArrayList<>();
+        details.add(watchedMovie.getTitle()+";");
+
+        Path addSaveM= Path.of(fileName);
+
+        try {
+            List<String> lines= Files.readAllLines(addSaveM);
+
+            boolean alreadyWatched = false;
+
+            for (String s:lines) {
+                String[] lineChop= s.split(";");
+                String watchedM = lineChop[0];
+                if(watchedMovie.getTitle().equals(watchedM)){
+                    alreadyWatched = true;
+                }
+            }
+            if (!alreadyWatched) {
+                Files.write(addSaveM, details, StandardOpenOption.APPEND);
+            }
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    public void addToSavedMovies(User user) {
+        // Get the user's list of saved movies
+        ArrayList<Movie> savedMovies = user.getSavedList();
+
+        // Add the selected movie to the user's list of saved movies
+        savedMovies.add(movies.get(chosenMedia));
+
+        // Create the filename based on the user's name
+        String fileName = "UserSavedMedias/UserSavedMovies/" + user.getUserName() + ".txt";
+        File savedMoviesFile = new File(fileName);
+
+        try (FileWriter writer = new FileWriter(savedMoviesFile, true)) {
+            // Write the selected movie to the file
+            String movieTitle = movies.get(chosenMedia).getTitle();
+            writer.write(movieTitle + "\n");
+
+            // Print a message that the movie has been added to saved movies
+            System.out.println(movieTitle + " added to saved movies.");
+
+        } catch (IOException e) {
+            // Handle any errors that occur during file writing
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+
 
     public void startStream(){
         streamingSetup();
@@ -217,7 +289,7 @@ public class Streaming {
         System.out.println("2. Browse series");
 
         //User chooses what to browse.
-        input = ui.getNumericInput("(1 or 2):");
+        input = ui.getNumericInput("(1 to 3):");
         chooseWhatToBrowse();
 
         //User chooses media

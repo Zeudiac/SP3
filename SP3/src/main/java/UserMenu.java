@@ -43,7 +43,6 @@ public class UserMenu {
             // Iterate through each line in the file
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                System.out.println(line);
                 String[] lineChop;
                 lineChop = line.split(";");
 
