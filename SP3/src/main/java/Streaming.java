@@ -32,26 +32,7 @@ public class Streaming {
 
     ArrayList<Movie> movies = new ArrayList<>();
     ArrayList<Serie> series = new ArrayList<>();
-    public void streamingSetup(){
 
-
-
-        FileIO io = new FileIO();
-
-        movies=io.readMovieData("MediaFiles/100bedstefilm.txt");
-        series=io.readSeriesData("MediaFiles/100bedsteserier.txt");
-
-        System.out.println("Hi!");
-        System.out.println("Welcome to AAAM's streaming service - Please choose an option to continue: ");
-        System.out.println("1. Login to Existing account");
-        System.out.println("2. Create new account");
-
-        //User chooses to login or create new profile.
-        input = ui.getNumericInput("(1 or 2):");
-        createNewAccountOrLogin();
-
-
-    }
     public void login(){
         Scanner usrInput = new Scanner(System.in);
         System.out.println("To login - Please type your username: ");
@@ -89,6 +70,13 @@ public class Streaming {
 
     public void chooseWhatToBrowse(){
         int count=0;
+
+
+        System.out.println("Please choose next action:");
+        System.out.println("1. Browse movies");
+        System.out.println("2. Browse series");
+        //User chooses what to browse.
+        input = ui.getNumericInput("(1 or 2):");
         if(input==1){
             movieChosen = true;
             for(Movie s: movies){
@@ -103,9 +91,6 @@ public class Streaming {
                 System.out.println(count+": "+s.getTitle());
             }
         }
-        else if(input==3){
-
-        }
         else{
             chooseWhatToBrowse();
             input = ui.getNumericInput("Number missmatch - Please type one of the numbers: (1 or2):");
@@ -114,6 +99,7 @@ public class Streaming {
 
     public void chooseMedia() {
         int count = 0;
+        input = ui.getNumericInput("to select movie please type the movies given number - (1 to 100): ");
         if(input<101&&input>0) {
             if (movieChosen) {
                 System.out.println("You choose: " + movies.get(input - 1).getTitle() + " - is this correct?");
@@ -138,6 +124,8 @@ public class Streaming {
                         count++;
                         System.out.println(count + ": " + s.getTitle());
                     }
+                }
+                else{
                     input = ui.getNumericInput("Please try again, to select movie please type the movies given number - (1 to 100):");
                     chooseMedia();
                 }
@@ -152,54 +140,80 @@ public class Streaming {
 
 
     public void chooseWhatToDoWithChosenMedia(){
-        if(input<5&&input>0) {
-            if (movieChosen) {
-                if(input==1){
-                    //1. Play Movie
-                    System.out.println(movies.get(chosenMedia)+" is now playing");
-                    System.out.println("----------------------------------------");
-                    System.out.println("----------------------------------------");
-                    System.out.println("----------------------------------------");
+        //User chooses what to do with media option (Save/delete from savedlist/watch/display details)
+        if (movieChosen) {
+            System.out.println("You have selected: " + movies.get(chosenMedia).getTitle());
+            System.out.println("Please choose what to do with the choosen Media:");
+            System.out.println("1. Play Movie");
+            System.out.println("2. Add to Saved Movies list");
+            System.out.println("3. Display media details");
+            input = ui.getNumericInput("(1 to 3):");
+            if (input < 4 && input > 0) {
+                if (movieChosen) {
 
-                    addToWatchedMovies(user);
+                    if (input == 1) {
+                        //1. Play Movie
+                        System.out.println(movies.get(chosenMedia) + " is now playing");
+                        System.out.println("----------------------------------------");
+                        System.out.println("----------------------------------------");
+                        System.out.println("----------------------------------------");
+
+                        addToWatchedMovies(user);
+                    }
+                    if (input == 2) {
+                        //2. Add to saved movies
+                        addToSavedMovies(user);
+                    }
+
+                    if (input == 3) {
+                        //3. Display details
+                        System.out.println(movies.get(chosenMedia));
+                        System.out.println("Press Enter key to continue...");
+                        try {
+                            System.in.read();
+                        } catch (Exception e) {
+                        }
+                    }
                 }
-                if(input==2) {
-                    //2. Add to saved movies
-                    addToSavedMovies(user);
                 }
-                if(input==3){
-                    //3. Delete from Saved Movies list
                 }
-                if(input==4){
-                    //4. Display details
-                    System.out.println(movies.get(chosenMedia));
+        else if (movieChosen == false) {
+
+                    System.out.println("You have selected: " + series.get(chosenMedia).getTitle());
+                    System.out.println("Please choose what to do with the choosen serie:");
+                    System.out.println("1. Play serie");
+                    System.out.println("2. Add to Saved Serie list");
+                    System.out.println("3. Display Serie details");
+                    input = ui.getNumericInput("(1 to 3):");
+
+                    if (input == 1) {
+                        //
+                        System.out.println(series.get(chosenMedia).getTitle() + " is now playing");
+                        System.out.println("----------------------------------------");
+                        System.out.println("----------------------------------------");
+                        System.out.println("----------------------------------------");
+                        addToWatchedSeries(user);
+                    }
+                    if (input == 2) {
+                        addToSavedSeries(user);
+                    }
+                    if (input == 3) {
+                        //
+                        System.out.println(series.get(chosenMedia));
+                        System.out.println("Press Enter key to continue...");
+                        try {
+                            System.in.read();
+                        } catch (Exception e) {
+                        }
+                    }
                 }
+
+            else {
+                input = ui.getNumericInput("Seems you typed a number that is not within the given range - please try again (1-3): ");
+                chooseWhatToDoWithChosenMedia();
             }
 
-            else if (movieChosen==false) {
-                if(input==1){
-                    //
-                    System.out.println(series.get(chosenMedia).getTitle()+" is now playing");
-                    System.out.println("----------------------------------------");
-                    System.out.println("----------------------------------------");
-                    System.out.println("----------------------------------------");
-                    addToWatchedSeries(user);
-                }
-                if(input==2) {
-                    addToSavedSeries(user);
-                }
-                if(input==3){
-                }
-                if(input==4){
-                    //
-                    System.out.println(series.get(chosenMedia));
-                }
-            }
-        }
-        else{
-            input = ui.getNumericInput("Seems you typed a number that is not within the given range - please try again (1-4): ");
-            chooseWhatToDoWithChosenMedia();
-        }
+
     }
 
     public void addToWatchedMovies(User user){
@@ -351,36 +365,46 @@ public class Streaming {
         }
     }
 
+    public void endOfStreamLoop(){
+        textInput = ui.getInput("Navigate to startmenu or exit - Startmenu: S   Exit: E ");
+        if (textInput.equalsIgnoreCase("s")) {
+            startStream();
+        } else if (textInput.equalsIgnoreCase("e")) {
+
+            System.out.println("See you next time... love Malte");
+
+        }
+        else{
+            input = ui.getNumericInput("Startmenu: S   Exit: E");
+            chooseMedia();
+        }
+    }
+    public void streamingSetup(){
 
 
+
+        FileIO io = new FileIO();
+
+        movies=io.readMovieData("MediaFiles/100bedstefilm.txt");
+        series=io.readSeriesData("MediaFiles/100bedsteserier.txt");
+
+        System.out.println("Hi!");
+        System.out.println("Welcome to AAAM's streaming service - Please choose an option to continue: ");
+        System.out.println("1. Login to Existing account");
+        System.out.println("2. Create new account");
+
+        //User chooses to login or create new profile.
+        input = ui.getNumericInput("(1 or 2):");
+        createNewAccountOrLogin();
+
+
+    }
 
     public void startStream(){
-        streamingSetup();
-
-        System.out.println("Login successfull! - please choose next action:");
-        System.out.println("1. Browse movies");
-        System.out.println("2. Browse series");
-
-        //User chooses what to browse.
-        input = ui.getNumericInput("(1 to 3):");
         chooseWhatToBrowse();
-
-        //User chooses media
-        input = ui.getNumericInput("to select movie please type the movies given number - (1 to 100): ");
         chooseMedia();
-
-        //User chooses what to do with media option (Save/delete from savedlist/watch/display details)
-        System.out.println("You have selected: " +movies.get(chosenMedia).getTitle());
-        System.out.println("Please choose what to do with the choosen Media:");
-        System.out.println("1. Play Movie");
-        System.out.println("2. Add to Saved Movies list");
-        System.out.println("3. Delete from Saved Movies list");
-        System.out.println("4. Display media details");
-
-
-        input = ui.getNumericInput("(1 to 4):");
         chooseWhatToDoWithChosenMedia();
-        //
+        endOfStreamLoop();
     }
 
 }
