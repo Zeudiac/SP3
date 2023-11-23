@@ -6,8 +6,8 @@ public class User {
     private ArrayList<Movie> watchedListMovies = new ArrayList<>();
     private ArrayList<Movie> savedListMovies = new ArrayList<>();
 
-    private ArrayList<Serie> watchedListSeries;
-    private ArrayList<Serie> savedListSeries;
+    private ArrayList<Serie> watchedListSeries = new ArrayList<>();
+    private ArrayList<Serie> savedListSeries = new ArrayList<>();
 
 
     public User(String userName, String passWord) {
@@ -28,11 +28,21 @@ public class User {
     }
 
     public ArrayList<Movie> getWatchedList() {
+
         return watchedListMovies;
     }
 
+    public ArrayList<Serie> getWatchedListSeries() {
+
+        return watchedListSeries;
+    }
+
     public ArrayList<Movie> getSavedList() {
+
         return savedListMovies;
+    }
+    public ArrayList<Serie> getSavedListSeries() {
+        return savedListSeries;
     }
 }
 

@@ -183,14 +183,12 @@ public class Streaming {
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
-
-
+                    addToWatchedSeries(user);
                 }
                 if(input==2) {
-                    //
+                    addToSavedSeries(user);
                 }
                 if(input==3){
-                    //
                 }
                 if(input==4){
                     //
@@ -253,6 +251,55 @@ public class Streaming {
             throw new RuntimeException(e);
         }
     }
+    public void addToWatchedSeries(User user){
+
+        ArrayList<Serie> watchedSeries = user.getSavedListSeries();
+
+        // Add the selected movie to the user's list of saved movies
+        watchedSeries.add(series.get(chosenMedia));
+
+        // Create the filename based on the user's name
+        fileName = "UserWatchedMedias/UserWatchedSeries/" + user.getUserName() + ".txt";
+        File savedMoviesFile = new File(fileName);
+
+        try (FileWriter writer = new FileWriter(savedMoviesFile, true)) {
+            // Write the selected movie to the file
+            String movieTitle = series.get(chosenMedia).getTitle();
+            writer.write(movieTitle + "\n");
+
+        } catch (IOException e) {
+            // Handle any errors that occur during file writing
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+
+        Serie watchedSerie = series.get(chosenMedia);
+
+        List<String> details = new ArrayList<>();
+        details.add(watchedSerie.getTitle()+";");
+
+        Path addSaveM= Path.of(fileName);
+
+        try {
+            List<String> lines= Files.readAllLines(addSaveM);
+
+            boolean alreadyWatched = false;
+
+            for (String s:lines) {
+                String[] lineChop= s.split(";");
+                String watchedS = lineChop[0];
+                if(watchedSerie.getTitle().equals(watchedS)){
+                    alreadyWatched = true;
+                }
+            }
+            if (!alreadyWatched) {
+                Files.write(addSaveM, details, StandardOpenOption.APPEND);
+            }
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void addToSavedMovies(User user) {
         // Get the user's list of saved movies
@@ -278,6 +325,32 @@ public class Streaming {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
+
+    public void addToSavedSeries(User user) {
+        // Get the user's list of saved movies
+        ArrayList<Serie> savedSeries = user.getSavedListSeries();
+
+        // Add the selected movie to the user's list of saved movies
+        savedSeries.add(series.get(chosenMedia));
+
+        // Create the filename based on the user's name
+        String fileName = "UserSavedMedias/UserSavedSeries/" + user.getUserName() + ".txt";
+        File savedMoviesFile = new File(fileName);
+
+        try (FileWriter writer = new FileWriter(savedMoviesFile, true)) {
+            // Write the selected movie to the file
+            String serieTitle = series.get(chosenMedia).getTitle();
+            writer.write(serieTitle + "\n");
+
+            // Print a message that the movie has been added to saved movies
+            System.out.println(serieTitle + " added to saved series.");
+
+        } catch (IOException e) {
+            // Handle any errors that occur during file writing
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
 
 
 
