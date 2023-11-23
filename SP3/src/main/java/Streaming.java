@@ -87,6 +87,7 @@ public class Streaming {
             }
         }
         else if(input==2){
+            movieChosen = false;
             for(Serie s: series){
                 count++;
                 System.out.println(count+": "+s.getTitle());
@@ -146,12 +147,32 @@ public class Streaming {
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
                     System.out.println("----------------------------------------");
+                    //Add to watched movies list
+
+                    //Opretter text fil for brugeren med deres gemte film - Skal hedde brugerens navn
+                    //Skal ikke oprette fil såfremt fil med brugerens navn allerede eksistere
+
+                    //Tilføjer den valgte film til text filen
+                    //Reinatilere "savedMoviesarraylist" for brugeren og tilføjer den gemte fil
                 }
                 if(input==2) {
                 //2. Add to Saved Movies list
+                    //Funktionen tager imod et bruger objekt
+
+                    //Opretter text fil for brugeren med deres gemte film - Skal hedde brugerens navn
+                    //Skal ikke oprette fil såfremt fil med brugerens navn allerede eksistere
+
+                    //Tilføjer den valgte film til text filen
+                    //Reinatilere "savedMoviesarraylist" for brugeren og tilføjer den gemte fil
                 }
                 if(input==3){
                 //3. Delete from Saved Movies list
+                    //Funktionen tager imod et bruger objekt
+
+                    //Smider en error til brugeren hvis user object ikke har nogle gemte film
+
+                    //Fjerner den valgte film fra brugerens gemte
+                    //Reinatilere "savedMoviesarraylist" for brugeren og tilføjer den gemte fil
                 }
                 if(input==4){
                 //4. Display details
@@ -184,7 +205,9 @@ public class Streaming {
             chooseWhatToDoWithChosenMedia();
         }
     }
-
+    public void addToSaved(User u){
+        u.getSavedList().add(movies.get(chosenMedia));
+    }
 
     public void startStream(){
         streamingSetup();

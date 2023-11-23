@@ -1,7 +1,4 @@
 Username;Password
-malte;cZ
-malte;asda
-malte;asd
 Malte;malte
 sut;den
 nope;nope
