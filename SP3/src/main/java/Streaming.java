@@ -530,9 +530,7 @@ public class Streaming {
     }
 
     public void startStream(){
-
         chooseWhatToBrowse();
-
     }
 
 
