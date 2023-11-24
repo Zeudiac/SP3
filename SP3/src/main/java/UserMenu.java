@@ -101,7 +101,7 @@ public class UserMenu {
         userCredentials.put(userName, passWord);
 
         // Save user data to the file "Accounts.txt"
-        saveUserData(userCredentials, "/Accounts/Accounts.txt");
+        saveUserData(userCredentials, "Accounts/Accounts.txt");
     }
 
     // Method to check if a username is already taken

@@ -361,7 +361,7 @@ public class Streaming {
     }
 
     public void endOfStreamLoop(){
-        textInput = ui.getInput("Navigate to startmenu or exit - Startmenu: S   Exit: E ");
+
         if (textInput.equalsIgnoreCase("s")) {
             startStream();
         } else if (textInput.equalsIgnoreCase("e")) {
@@ -370,8 +370,8 @@ public class Streaming {
 
         }
         else{
-            input = ui.getNumericInput("Startmenu: S   Exit: E");
-            chooseMedia();
+            textInput = ui.getInput("Seems you did not select S or E please do so to continue - Startmenu: S   Exit: E ");
+            endOfStreamLoop();
         }
     }
     public void streamingSetup(){
@@ -395,10 +395,12 @@ public class Streaming {
 
     public void startStream(){
 
-        //chooseWhatToBrowse();
-        //chooseMedia();
-        //chooseWhatToDoWithChosenMedia();
-        //endOfStreamLoop();
+        chooseWhatToBrowse();
+        chooseMedia();
+        chooseWhatToDoWithChosenMedia();
+        textInput = ui.getInput("Navigate to startmenu or exit - Startmenu: S   Exit: E ");
+        endOfStreamLoop();
+        /*
         String stringInput = ui.getInput("Write the category you want to search for:");
         int count=0;
         for(Movie m: movies){
@@ -407,7 +409,7 @@ public class Streaming {
                 System.out.println(count+". "+m.getTitle()+" - "+m.getCategories());
             }
         }
-
+*/
     }
 
 
