@@ -22,6 +22,7 @@ public class Streaming {
     private boolean movieChosen = false;
     UserMenu userMenu = new UserMenu();
     TextUI ui = new TextUI();
+    int count=0;
 
     User user;
 
@@ -64,20 +65,25 @@ public class Streaming {
     }
 
     public void chooseWhatToBrowse(){
-        int count=0;
-
+        count=0;
 
         System.out.println("Please choose next action:");
         System.out.println("1. Browse movies");
         System.out.println("2. Browse series");
+        System.out.println("3. Search movies by category");
+        System.out.println("4. Search series by category");
+        System.out.println("5. Exit streaming service");
         //User chooses what to browse.
-        input = ui.getNumericInput("(1 or 2):");
+        input = ui.getNumericInput("(1 to 5):");
         if(input==1){
             movieChosen = true;
             for(Movie s: movies){
                 count++;
                 System.out.println(count+": "+s.getTitle());
             }
+            chooseMedia();
+            chooseWhatToDoWithChosenMedia();
+            endOfStreamLoop();
         }
         else if(input==2){
             movieChosen = false;
@@ -85,10 +91,24 @@ public class Streaming {
                 count++;
                 System.out.println(count+": "+s.getTitle());
             }
+            chooseMedia();
+            chooseWhatToDoWithChosenMedia();
+            endOfStreamLoop();
+        }
+        else if(input==3){
+            searchByCategoriMovies();
+            endOfStreamLoop();
+        }
+        else if(input==4){
+            searchByCategoriSeries();
+            endOfStreamLoop();
+        }
+        else if(input==5){
+
         }
         else{
             chooseWhatToBrowse();
-            input = ui.getNumericInput("Number missmatch - Please type one of the numbers: (1 or2):");
+            input = ui.getNumericInput("Number missmatch - Please type one of the numbers: (1 to 2):");
         }
     }
 
@@ -131,8 +151,6 @@ public class Streaming {
             chooseMedia();
         }
     }
-
-
 
     public void chooseWhatToDoWithChosenMedia(){
         //User chooses what to do with media option (Save/delete from savedlist/watch/display details)
@@ -310,6 +328,7 @@ public class Streaming {
         }
     }
 
+
     public void addToSavedMovies(User user) {
         // Get the user's list of saved movies
         ArrayList<Movie> savedMovies = user.getSavedList();
@@ -333,6 +352,124 @@ public class Streaming {
             // Handle any errors that occur during file writing
             System.err.println("Error writing to file: " + e.getMessage());
         }
+    }
+    public void searchByCategoriSeries() {
+        String stringInput = ui.getInput("Write the category you want to search for:");
+
+        // Make sure the string is not empty
+
+
+        List<Serie> matchingSeries = new ArrayList<>();
+        int count = 0;
+
+        if (!stringInput.isEmpty()) {
+            // Convert the first character to uppercase and concatenate it with the rest of the string
+            stringInput = Character.toUpperCase(stringInput.charAt(0)) + stringInput.substring(1).toLowerCase();
+
+            for (Serie s : series) {
+                if (s.getCategories().contains(stringInput)) {
+                    matchingSeries.add(s);
+                    count++;
+                    System.out.println(count + ". " + s.getTitle() + " - " + s.getCategories());
+                }
+            }
+        }
+        if (!stringInput.isEmpty()) {
+            int input = ui.getNumericInput("To select the serie, type the serie's number");
+
+            if (input <= count && input > 0) {
+                System.out.println("You chose: " + matchingSeries.get(input - 1).getTitle() + " Category: " + matchingSeries.get(input - 1).getCategories() + "- is this correct?");
+                String textInput = ui.getInput("(Y/N): ");
+
+                if (textInput.equalsIgnoreCase("y")) {
+                    chosenMedia = series.indexOf(matchingSeries.get(input - 1));
+                    chooseWhatToDoWithChosenMedia();
+                } else if (textInput.equalsIgnoreCase("n")) {
+                    int count1 = 0;
+
+                    for (Serie m : series) {
+                        if (m.getCategories().contains(stringInput)) {
+                            matchingSeries.add(m);
+                            count1++;
+                            System.out.println(count1 + ". " + m.getTitle() + " - " + m.getCategories());
+                        }
+                    }
+
+                    input = ui.getNumericInput("Choose another serie: ");
+                    if (input <= count && input > 0) {
+                        chosenMedia = series.indexOf(matchingSeries.get(input - 1));
+                        chooseWhatToDoWithChosenMedia();
+                    } else {
+                        System.out.println("Invalid input. Exiting...");
+
+                    }
+                }
+            }
+        } else {
+            System.out.println("Invalid input. Exiting...");
+            searchByCategoriSeries();
+        }
+    }
+    public void searchByCategoriMovies() {
+        String stringInput = ui.getInput("Write the category you want to search for:");
+
+        // Make sure the string is not empty
+
+
+        List<Movie> matchingMovie = new ArrayList<>();
+        int count = 0;
+
+        if (!stringInput.isEmpty()) {
+            // Convert the first character to uppercase and concatenate it with the rest of the string
+            stringInput = Character.toUpperCase(stringInput.charAt(0)) + stringInput.substring(1).toLowerCase();
+
+            for (Movie s: movies) {
+                if (s.getCategories().contains(stringInput)) {
+                    matchingMovie.add(s);
+                    count++;
+                    System.out.println(count + ". " + s.getTitle() + " - " + s.getCategories());
+                }
+            }
+        }
+        if (!stringInput.isEmpty()) {
+            int input = ui.getNumericInput("To select the serie, type the serie's number");
+
+            if (input <= count && input > 0) {
+                System.out.println("You chose: " + matchingMovie.get(input - 1).getTitle() + " Category: " + matchingMovie.get(input - 1).getCategories() + "- is this correct?");
+                String textInput = ui.getInput("(Y/N): ");
+
+                if (textInput.equalsIgnoreCase("y")) {
+                    chosenMedia = movies.indexOf(matchingMovie.get(input - 1));
+                    movieChosen = true;
+                    chooseWhatToDoWithChosenMedia();
+                } else if (textInput.equalsIgnoreCase("n")) {
+                    int count1 = 0;
+
+                    for (Movie m : movies) {
+                        if (m.getCategories().contains(stringInput)) {
+                            matchingMovie.add(m);
+                            count1++;
+                            System.out.println(count1 + ". " + m.getTitle() + " - " + m.getCategories());
+                        }
+                    }
+
+                    input = ui.getNumericInput("Choose another serie: ");
+                    if (input <= count && input > 0) {
+                        chosenMedia = series.indexOf(matchingMovie.get(input - 1));
+                        movieChosen = true;
+                        chooseWhatToDoWithChosenMedia();
+                    } else {
+                        System.out.println("Invalid input. Exiting...");
+
+                    }
+                }
+            }
+        }
+        else {
+            System.out.println("Invalid input. Exiting...");
+            searchByCategoriMovies();
+        }
+
     }
 
     public void addToSavedSeries(User user) {
@@ -361,16 +498,15 @@ public class Streaming {
     }
 
     public void endOfStreamLoop(){
-
+        textInput = ui.getInput("To navigate to startmenu or exit press S or E - Startmenu: S   Exit: E ");
         if (textInput.equalsIgnoreCase("s")) {
             startStream();
         } else if (textInput.equalsIgnoreCase("e")) {
 
-            System.out.println("See you next time... love Malte");
+            System.out.println("See you next time... Kind regards AAAM");
 
         }
         else{
-            textInput = ui.getInput("Seems you did not select S or E please do so to continue - Startmenu: S   Exit: E ");
             endOfStreamLoop();
         }
     }
@@ -396,20 +532,7 @@ public class Streaming {
     public void startStream(){
 
         chooseWhatToBrowse();
-        chooseMedia();
-        chooseWhatToDoWithChosenMedia();
-        textInput = ui.getInput("Navigate to startmenu or exit - Startmenu: S   Exit: E ");
-        endOfStreamLoop();
-        /*
-        String stringInput = ui.getInput("Write the category you want to search for:");
-        int count=0;
-        for(Movie m: movies){
-            if(m.getCategories().contains(stringInput)){
-                count++;
-                System.out.println(count+". "+m.getTitle()+" - "+m.getCategories());
-            }
-        }
-*/
+
     }
 
 
